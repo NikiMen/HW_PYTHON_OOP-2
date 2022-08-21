@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import ClassVar
 
+
 @dataclass
 class InfoMessage:
     """Информационное сообщение о тренировке."""
@@ -9,14 +10,13 @@ class InfoMessage:
     distance: float
     speed: float
     calories: float
-    
+
     def get_message(self) -> None:
         return (f'''Тип тренировки: {self.training_type};
                 Длительность: {round(self.duration, 3)} ч.;
                 Дистанция: {round(self.distance, 3)} км.;
                 Ср. скорость: {round(self.speed, 3)} км/ч;
                 Потрачено ккал.: {round(self.calories, 3)}.''')
-        
 
 
 @dataclass
@@ -34,13 +34,11 @@ class Training:
         self.duration = duration
         self.weight = weight
 
-
     def get_distance(self) -> float:
         """Получить дистанцию в км."""
         return (self.action
                 * self.LEN_STEP
                 / self.M_IN_KM)
-        
 
     def get_mean_speed(self) -> float:
         """Получить среднюю скорость движения."""
@@ -49,7 +47,6 @@ class Training:
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
         pass
-        
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
@@ -59,8 +56,6 @@ class Training:
             self.get_distance(),
             self.get_mean_speed(),
             self.get_spent_calories())
-        
-        
 
 
 class Running(Training):
@@ -69,13 +64,12 @@ class Running(Training):
     coeff_calorie_2: ClassVar[int] = 20
 
     def get_spent_calories(self) -> float:
-        return ((self.coeff_calorie_1 
+        return ((self.coeff_calorie_1
                 * self.get_mean_speed()
                 - self.coeff_calorie_2)
                 * self.weight
                 / self.M_IN_KM
-                * self.duration) 
-    
+                * self.duration)
 
 
 class SportsWalking(Training):
@@ -91,7 +85,7 @@ class SportsWalking(Training):
                  height: float):
         super().__init__(action, duration, weight)
         self.height = height
-    
+
     def get_spent_calories(self) -> float:
         return ((self.coeff_1
                 * self.weight
@@ -105,9 +99,9 @@ class SportsWalking(Training):
 
 class Swimming(Training):
     """Тренировка: плавание."""
-    LEN_STEP: ClassVar[float]= 1.38
-    coeff_1:  ClassVar[float] = 1.1
-    coeff_2:  ClassVar[ int ] = 2
+    LEN_STEP: ClassVar[float] = 1.38
+    coeff_1: ClassVar[float] = 1.1
+    coeff_2: ClassVar[int] = 2
 
     def __init__(self,
                  action: int,
@@ -118,34 +112,36 @@ class Swimming(Training):
         super().__init__(action, duration, weight)
         self.lenght_pool = lenght_pool
         self.count_poll = count_poll
+
     def get_mean_speed(self) -> float:
         return (self.lenght_pool
                 * self.count_poll
                 / Training.M_IN_KM
                 / self.duration)
-                
+
     def get_distance(self) -> float:
         distance = (self.action
-                    * Swimming.LEN_STEP 
+                    * Swimming.LEN_STEP
                     / Training.M_IN_KM)
         return distance
 
     def get_spent_calories(self) -> float:
         return ((self.get_mean_speed()
-                    + self.coeff_1)    
+                + self.coeff_1)
                 * self.coeff_2
                 * self.weight)
+
 
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
     parameters_train = {
-        'SWM' : Swimming,
-        'RUN' : Running,
-        'WLK' : SportsWalking}
+        'SWM': Swimming,
+        'RUN': Running,
+        'WLK': SportsWalking}
     if workout_type in parameters_train:
         return parameters_train[workout_type](*data)
     else:
-        raise ValueError('Тренировка не найдена')    
+        raise ValueError('Тренировка не найдена')
 
 
 def main(training: Training) -> None:
@@ -164,4 +160,3 @@ if __name__ == '__main__':
     for workout_type, data in packages:
         training = read_package(workout_type, data)
         main(training)
-
