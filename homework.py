@@ -11,12 +11,12 @@ class InfoMessage:
     speed: float
     calories: float
 
-    def get_message(self) -> None:
-        return (f'''Тип тренировки: {self.training_type};
-                Длительность: {round(self.duration, 3)} ч.;
-                Дистанция: {round(self.distance, 3)} км.;
-                Ср. скорость: {round(self.speed, 3)} км/ч;
-                Потрачено ккал.: {round(self.calories, 3)}.''')
+    def get_message(self) -> str:
+        return (f'''Тип тренировки: {self.training_type} ;
+                Длительность: {round(self.duration, 3)} ч. ;
+                Дистанция: {round(self.distance, 3)} км. ;
+                Ср. скорость: {round(self.speed, 3)} км/ч ;
+                Потрачено ккал.: {round(self.calories, 3)} .''')
 
 
 @dataclass
@@ -107,14 +107,14 @@ class Swimming(Training):
                  action: int,
                  duration: float,
                  weight: float,
-                 lenght_pool: float,
+                 length_pool: float,
                  count_poll: int):
         super().__init__(action, duration, weight)
-        self.lenght_pool = lenght_pool
+        self.length_pool = length_pool
         self.count_poll = count_poll
 
     def get_mean_speed(self) -> float:
-        return (self.lenght_pool
+        return (self.length_pool
                 * self.count_poll
                 / Training.M_IN_KM
                 / self.duration)
