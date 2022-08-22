@@ -12,10 +12,10 @@ class InfoMessage:
     calories: float
 
     def get_message(self) -> str:
-        return (f'Тип тренировки: {self.training_type};'
-                f'Длительность: {round(self.duration, 3)} ч.;'
-                f'Дистанция: {round(self.distance, 3)} км.;'
-                f'Ср. скорость: {round(self.speed, 3)} км/ч;'
+        return (f'Тип тренировки: {self.training_type}; '
+                f'Длительность: {round(self.duration, 3)} ч.; '
+                f'Дистанция: {round(self.distance, 3)} км.; '
+                f'Ср. скорость: {round(self.speed, 3)} км/ч; '
                 f'Потрачено ккал.: {round(self.calories, 3)}.')
 
 
@@ -62,6 +62,7 @@ class Running(Training):
     """Тренировка: бег."""
     coeff_calorie_1: ClassVar[int] = 18
     coeff_calorie_2: ClassVar[int] = 20
+    hh_in_mm: ClassVar[int] = 60
 
     def get_spent_calories(self) -> float:
         return ((self.coeff_calorie_1
@@ -69,14 +70,14 @@ class Running(Training):
                 - self.coeff_calorie_2)
                 * self.weight
                 / self.M_IN_KM
-                * self.duration)
+                * (self.duration * self.hh_in_mm))
 
 
 class SportsWalking(Training):
     """Тренировка: спортивная ходьба."""
     coeff_1: ClassVar[float] = 0.035
-    coeff_2: ClassVar[int] = 2
-    coeff_3: ClassVar[float] = 0.029
+    coeff_2: ClassVar[float] = 0.029
+    hh_in_mm: ClassVar[int] = 60
 
     def __init__(self,
                  action: int,
@@ -90,11 +91,11 @@ class SportsWalking(Training):
         return ((self.coeff_1
                 * self.weight
                 + (self.get_mean_speed()
-                    ** self.coeff_2
+                    ** 2
                     // self.height)
-                * self.coeff_3
+                * self.coeff_2
                 * self.weight)
-                * self.duration)
+                * (self.duration * self.hh_in_mm))
 
 
 class Swimming(Training):
