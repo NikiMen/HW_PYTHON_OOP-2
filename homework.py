@@ -93,7 +93,7 @@ class SportsWalking(Training):
 @dataclass
 class Swimming(Training):
     """Тренировка: плавание."""
-    SPORTS_ROWING: ClassVar[float] = 1.38
+    LEN_STEP: ClassVar[float] = 1.38
     COEFF_1: ClassVar[float] = 1.1
     MATH_DEGREE: ClassVar[int] = 2
     action: int
@@ -110,7 +110,7 @@ class Swimming(Training):
 
     def get_distance(self) -> float:
         distance = (self.action
-                    * self.SPORTS_ROWING
+                    * self.LEN_STEP
                     / Training.M_IN_KM)
         return distance
 
