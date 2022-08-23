@@ -11,7 +11,6 @@ class InfoMessage:
     speed: float
     calories: float
 
-
     def get_message(self) -> str:
         return (f'Тип тренировки: {self.training_type}; '
                 f'Длительность: {self.duration:0.3f} ч.; '
